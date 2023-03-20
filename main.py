@@ -25,43 +25,10 @@ class QueryInfoBase(BaseModel):
     tables: List[str]
     statement: str
 
-class Foo(BaseModel):
-    id: int
-    name: str
 
-
-async def map_list_foos_result_to_foos(
-    result: AsyncIterable[Mapping[str, Any]]
-) -> AsyncGenerator[Foo, None]:
-    """Map a list foos DB result to a list of foos."""
-    async for row in result:
-        yield Foo(**row)
-
-
-async def list_foos_query(
-    db: DbPoolConnAndCursor
-) -> AsyncGenerator[dict[str, Any], None]:
-    """List all foos."""
-    cursor = await db.conn.cursor()
-    await cursor.execute("SELECT id, name FROM foo")
-    cursor_rows_as_dicts(cursor)
-    rows = (row async for row in cursor_rows_as_gen(cursor))
-    async for row in result_keys_to_lower(rows):
-        yield row
-
-
-@handle_db_errors
-async def _get_foos(db: DbPoolConnAndCursor) -> list[Foo]:
-    result = list_foos_query(db)
-    foos = [x async for x in map_list_foos_result_to_foos(result)]
-    return foos
-
-
-@router.get("/", response_model=list[Foo])
-async def read_foos(db: DbPoolConnAndCursor = Depends(get_db_cursor)):
-    foos = await _get_foos(db)
-    logger.info(f"Fetched {len(foos)} foos")
-    return foos
+@router.get("/")
+async def read_foos():
+    return {"Service": "Oracle Gateway"}
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def update_records(query_info: QueryInfoBase, db: DbPoolConnAndCursor = Depends(get_db_cursor)):
