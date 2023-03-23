@@ -33,7 +33,7 @@ async def read_foos():
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def update_records(query_info: QueryInfoBase, db: DbPoolConnAndCursor = Depends(get_db_cursor)):
     cursor = await db.conn.cursor()
-    query_info = models.QueryInfo(**dict(query_info))
+    query_info = QueryInfoBase(**dict(query_info))
     await cursor.execute(f"select \"sourceSystemLastModifiedDateTime_str\" from {query_info.tables[0]} WHERE \"{query_info.id_column}\" = '{query_info.id}'")      
     existing_record = await cursor.fetchone()
     if existing_record:
