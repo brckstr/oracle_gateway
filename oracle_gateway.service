@@ -13,7 +13,7 @@ Group=www-data
 
 WorkingDirectory=/home/oracle_gateway
 
-PassEnvironment=DB_DSN DB_USERNAME DB_PASSWORD
+PassEnvironment=DB_DSN DB_USER DB_PASSWORD
 
 ExecStart= /home/oracle_gateway/bin/gunicorn -c gunicorn_conf.py main:app
 
