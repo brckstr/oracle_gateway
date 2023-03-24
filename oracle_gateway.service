@@ -7,9 +7,9 @@ After=network.target
 
 [Service]
 
-User=ubuntu
+# User=ubuntu
 
-Group=www-data
+# Group=www-data
 
 WorkingDirectory=/home/oracle_gateway
 
