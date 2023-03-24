@@ -13,7 +13,7 @@ Group=www-data
 
 WorkingDirectory=/home/oracle_gateway
 
-ExecStart=/home/oracle_gateway/bin/gunicorn -c gunicorn_conf.py main:app
+ExecStart= source/home/oracle_gateway/bin/activate;/home/oracle_gateway/bin/gunicorn -c gunicorn_conf.py main:app
 
 
 [Install]
