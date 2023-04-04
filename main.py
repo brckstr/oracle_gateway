@@ -22,6 +22,7 @@ router = APIRouter()
 class QueryInfoBase(BaseModel):
     id: str
     id_column: str
+    timestamp_column: str
     tables: List[str]
     statement: str
 
@@ -34,11 +35,11 @@ async def read_foos():
 async def update_records(query_info: QueryInfoBase, db: DbPoolConnAndCursor = Depends(get_db_cursor)):
     cursor = await db.conn.cursor()
     query_info = QueryInfoBase(**dict(query_info))
-    await cursor.execute(f"select \"sourceSystemLastModifiedDateTime_str\" from {query_info.tables[0]} WHERE \"{query_info.id_column}\" = '{query_info.id}'")      
+    await cursor.execute(f"select {query_info.timestamp_column} from {query_info.tables[0]} WHERE {query_info.id_column} = '{query_info.id}'")      
     existing_record = await cursor.fetchone()
     if existing_record:
         for table in query_info.tables:
-            await cursor.execute(f"DELETE FROM {table} where \"{query_info.id_column}\" = '{query_info.id}'")
+            await cursor.execute(f"DELETE FROM {table} where {query_info.id_column} = '{query_info.id}'")
     await cursor.execute(query_info.statement)
     return {}
 
