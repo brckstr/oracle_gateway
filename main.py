@@ -45,6 +45,7 @@ async def update_records(query_info: QueryInfoBase, db: DbPoolConnAndCursor = De
         else:
             return {}
     await cursor.execute(query_info.statement)
+    await db.conn.commit()
     return {}
 
 async def intermittent_database_error_handler(
