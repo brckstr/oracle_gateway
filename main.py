@@ -20,7 +20,6 @@ router = APIRouter()
 
 
 class QueryInfoBase(BaseModel):
-    collection: str
     id: str
     id_column: str
     timestamp: str
