@@ -39,7 +39,7 @@ async def update_records(query_info: QueryInfoBase, db: DbPoolConnAndCursor = De
     await cursor.execute(f"select {query_info.timestamp_column} from {query_info.tables[0]} WHERE {query_info.id_column} = '{query_info.id}'")      
     existing_record = await cursor.fetchone()
     if existing_record:
-        if existing_record[query_info.timestamp_column] <= query_info.timestamp:
+        if existing_record[0] <= query_info.timestamp:
             for table in query_info.tables:
                 await cursor.execute(f"DELETE FROM {table} where {query_info.id_column} = '{query_info.id}'")
         else:
